@@ -1,5 +1,6 @@
 package sree.ddukk.sreeprodapp.ui.Sections
 
+import CartViewModel
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -26,6 +27,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -42,11 +44,14 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import sree.ddukk.sreeprodapp.R
 import sree.ddukk.sreeprodapp.ui.theme.customFontFamily
 
+
 @Composable
-fun Top() {
+fun Top(cartViewModel: CartViewModel = viewModel()) {
+    val cartSize by cartViewModel.cartSize.observeAsState(0)
     val context = LocalContext.current
     var searchText by remember { mutableStateOf("") }
 
@@ -62,20 +67,41 @@ fun Top() {
         ) {
             Text(
                 text = "Discover",
-                style = TextStyle(fontFamily = customFontFamily),
-                fontSize = 32.sp,
-                fontWeight = FontWeight.Bold,
-                color = Color(0xFF7F44D2)
+                style = TextStyle(
+                    fontFamily = customFontFamily,
+                    fontSize = 36.sp,
+                    fontWeight = FontWeight.Bold,
+                    lineHeight = 40.sp,
+                    color = Color(0xFF7F44D2)
+                )
             )
 
             IconButton(onClick = {
-                Toast.makeText(context, "No Products in Cart", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, "Cart contains $cartSize items", Toast.LENGTH_SHORT).show()
             }) {
-                Icon(
-                    imageVector = Icons.Default.ShoppingCart,
-                    contentDescription = "Cart Notification",
-                    tint = Color(0xFF03DAC5)
-                )
+                Box {
+                    Icon(
+                        imageVector = Icons.Default.ShoppingCart,
+                        contentDescription = "Cart Notification",
+                        tint = Color(0xFF03DAC5)
+                    )
+                    if (cartSize > 0) {
+                        Box(
+                            modifier = Modifier
+                                .align(Alignment.TopEnd)
+                                .size(16.dp)
+                                .background(Color.Red, RoundedCornerShape(8.dp))
+                        ) {
+                            Text(
+                                text = cartSize.toString(),
+                                color = Color.White,
+                                fontSize = 10.sp,
+                                fontWeight = FontWeight.Bold,
+                                modifier = Modifier.align(Alignment.Center)
+                            )
+                        }
+                    }
+                }
             }
         }
         Row(
@@ -102,9 +128,7 @@ fun Top() {
         TextField(
             value = searchText,
             onValueChange = { newText -> searchText = newText },
-            placeholder = {
-                Text("Search for products...", color = Color(0xFF9E9E9E))
-            },
+            placeholder = { Text("Search for products...", color = Color(0xFF9E9E9E)) },
             leadingIcon = {
                 Icon(
                     imageVector = Icons.Default.Search,
@@ -121,9 +145,9 @@ fun Top() {
             },
             modifier = Modifier
                 .fillMaxWidth()
-//                .background(Color(0xFFF1F8E9), CircleShape)
-                .clip(RoundedCornerShape(20.dp))
-                .padding(horizontal = 4.dp)
+                .background(Color(0xFFF1F1F1), RoundedCornerShape(12.dp))
+                .clip(RoundedCornerShape(12.dp))
+                .padding(2.dp)
         )
 
         Spacer(modifier = Modifier.height(14.dp))
@@ -153,7 +177,6 @@ fun Top() {
         }
     }
 }
-
 
 @Preview(showBackground = true)
 @Composable

@@ -1,8 +1,11 @@
 package sree.ddukk.sreeprodapp.ui.pages
 
+import CartViewModel
 import FavoritesViewModel
 import android.app.Application
 import androidx.compose.foundation.Image
+import android.content.Intent
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
@@ -34,6 +37,7 @@ import sree.ddukk.sreeprodapp.ui.Sections.products
 fun ProductDetailScreen(
     productName: String,
     navController: NavController,
+    cartViewModel: CartViewModel = viewModel(),
     favoritesViewModel: FavoritesViewModel = viewModel(
         factory = ViewModelProvider.AndroidViewModelFactory.getInstance(
             LocalContext.current.applicationContext as Application
@@ -42,8 +46,7 @@ fun ProductDetailScreen(
 ) {
     val product = products.find { it.name == productName } ?: return
     val isFavorite = favoritesViewModel.isFavorite(product)
-
-
+    val context = LocalContext.current
 
     Column(
         modifier = Modifier
@@ -55,21 +58,14 @@ fun ProductDetailScreen(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier.fillMaxWidth()
         ) {
-
-            IconButton(
-                onClick = { navController.popBackStack() }
-            ) {
+            IconButton(onClick = { navController.popBackStack() }) {
                 Icon(
                     imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                     contentDescription = "Back"
                 )
             }
 
-            IconButton(
-                onClick = {
-                    favoritesViewModel.toggleFavorite(product)
-                }
-            ) {
+            IconButton(onClick = { favoritesViewModel.toggleFavorite(product) }) {
                 Icon(
                     imageVector = if (isFavorite) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
                     contentDescription = if (isFavorite) "Remove from Favorites" else "Add to Favorites",
@@ -77,17 +73,23 @@ fun ProductDetailScreen(
                 )
             }
 
-            IconButton(
-                onClick = { }
-            ) {
-                Icon(
-                    imageVector = Icons.Default.Share,
-                    contentDescription = "Share"
-                )
+            IconButton(onClick = {
+                val shareIntent = Intent().apply {
+                    action = Intent.ACTION_SEND
+                    putExtra(
+                        Intent.EXTRA_TEXT,
+                        "Check out this product: ${product.name} for ₹${product.discountedPrice}!"
+                    )
+                    type = "text/plain"
+                }
+                context.startActivity(Intent.createChooser(shareIntent, "Share Product via"))
+            }) {
+                Icon(imageVector = Icons.Default.Share, contentDescription = "Share")
             }
         }
 
         Spacer(modifier = Modifier.height(16.dp))
+
         Image(
             painter = rememberAsyncImagePainter(model = product.imageRes),
             contentDescription = product.name,
@@ -95,7 +97,6 @@ fun ProductDetailScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(200.dp)
-                .width(250.dp)
                 .clip(RoundedCornerShape(12.dp))
                 .border(
                     width = 2.dp,
@@ -105,19 +106,17 @@ fun ProductDetailScreen(
         )
 
         Spacer(modifier = Modifier.height(16.dp))
+
         Text(
             text = product.name,
             fontWeight = FontWeight.Bold,
             fontSize = 24.sp,
-            color = Color.Black
+            color = MaterialTheme.colorScheme.onBackground
         )
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(8.dp))
 
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.padding(vertical = 8.dp)
-        ) {
+        Row(verticalAlignment = Alignment.CenterVertically) {
             Text(
                 text = "⭐ ${product.avgReview}",
                 fontSize = 16.sp,
@@ -133,23 +132,16 @@ fun ProductDetailScreen(
         }
 
         Spacer(modifier = Modifier.height(16.dp))
-
-        Text(
-            text = product.details,
-            fontSize = 16.sp,
-            color = Color.Gray
-        )
+        Text(text = product.details, fontSize = 16.sp, color = Color.Gray)
 
         Spacer(modifier = Modifier.height(16.dp))
-
         Text(
             text = "Delivery on ${product.deliveryDate}",
             fontSize = 14.sp,
-            color = Color.Gray
+            color = MaterialTheme.colorScheme.primary
         )
 
         Spacer(modifier = Modifier.height(16.dp))
-
         Text(
             text = "Price: ₹${product.discountedPrice}",
             fontWeight = FontWeight.Bold,
@@ -158,9 +150,8 @@ fun ProductDetailScreen(
         )
 
         Spacer(modifier = Modifier.height(16.dp))
-
         Button(
-            onClick = { },
+            onClick = { cartViewModel.addToCart(product.toString()) },
             modifier = Modifier
                 .fillMaxWidth()
                 .height(50.dp),
@@ -170,6 +161,7 @@ fun ProductDetailScreen(
         }
     }
 }
+
 
 
 

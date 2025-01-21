@@ -44,7 +44,7 @@ fun FavoritesScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(8.dp)
-                        .background(Color.LightGray, shape = RoundedCornerShape(8.dp))
+                        .background(Color.White, shape = RoundedCornerShape(8.dp))
                         .padding(8.dp)
                 ) {
                     Image(

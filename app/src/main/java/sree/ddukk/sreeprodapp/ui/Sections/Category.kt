@@ -45,10 +45,10 @@ fun Category(navController: NavController) {
             modifier = Modifier.padding(top = 8.dp)
         ) {
             val categories = listOf(
-                Category("Mobile Phones", R.drawable.ic_launcher_foreground),
-                Category("AirPods", R.drawable.ic_launcher_foreground),
-                Category("Speaker", R.drawable.ic_launcher_foreground),
-                Category("Controller", R.drawable.ic_launcher_foreground)
+                Category("Mobile Phones", R.drawable.mobile),
+                Category("AirPods", R.drawable.pods),
+                Category("Speaker", R.drawable.speak),
+                Category("Controller", R.drawable.controller)
             )
             items(categories) { category ->
                 CategoryCard(category)

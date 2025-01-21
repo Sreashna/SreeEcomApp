@@ -55,6 +55,7 @@ dependencies {
     implementation("androidx.compose.material:material:1.5.0")
     implementation("androidx.compose.material3:material3:1.1.0")
     implementation("io.coil-kt:coil-compose:2.1.0")
+    implementation ("androidx.lifecycle:lifecycle-livedata-ktx:2.6.1")
 
     implementation("androidx.navigation:navigation-compose:2.6.0")
     implementation(libs.androidx.navigation.runtime.ktx)
@@ -65,6 +66,7 @@ dependencies {
     implementation("androidx.room:room-ktx:2.5.2")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
     implementation ("androidx.room:room-runtime:2.5.0")
+    implementation(libs.androidx.runtime.livedata)
     kapt ("androidx.room:room-compiler:2.5.0") 
     implementation(libs.androidx.material3)
     testImplementation(libs.junit)

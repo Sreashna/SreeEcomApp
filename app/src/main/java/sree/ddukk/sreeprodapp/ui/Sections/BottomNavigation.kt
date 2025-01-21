@@ -25,10 +25,8 @@ fun BottomNavigationBar(navController: NavHostController) {
         BottomNavItem("favorites", "Favorites", Icons.Default.Favorite),
         BottomNavItem("profile", "Profile", Icons.Default.Person)
     )
-
-    //bottom
     BottomNavigation(
-        backgroundColor = Color(0xFF0D829F)
+        backgroundColor = Color(0xFF2E7593)
     ) {
 
         val currentDestination =

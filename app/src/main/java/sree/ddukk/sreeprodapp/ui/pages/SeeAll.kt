@@ -65,12 +65,12 @@ fun SeeAllCategoriesScreen(navController: NavController) {
             )
         }
         val categories = listOf(
-            Category("SmartPhones", R.drawable.ic_launcher_foreground),
-            Category("Laptops", R.drawable.ic_launcher_foreground),
-            Category("Speakers", R.drawable.ic_launcher_foreground),
-            Category("Controller", R.drawable.ic_launcher_foreground),
-            Category("Airpods", R.drawable.ic_launcher_foreground),
-            Category("Camera", R.drawable.ic_launcher_foreground),
+            Category("SmartPhones", R.drawable.mobile),
+            Category("Laptops", R.drawable.laptops),
+            Category("Speakers", R.drawable.speak),
+            Category("Controller", R.drawable.controller),
+            Category("Airpods", R.drawable.pods),
+            Category("Camera", R.drawable.controller),
             Category("Watches", R.drawable.ic_launcher_foreground),
             Category("Xbox", R.drawable.ic_launcher_foreground),
             Category("Tablet", R.drawable.ic_launcher_foreground)

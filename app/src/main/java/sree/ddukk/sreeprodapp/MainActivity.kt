@@ -1,5 +1,6 @@
 package sree.ddukk.sreeprodapp
 
+import CartViewModel
 import FavoritesViewModel
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -85,7 +86,9 @@ fun ProductApp() {
                 ProductDetailScreen(
                     productName = productName,
                     navController = navController,
-                    favoritesViewModel = favoritesViewModel
+//                    favoritesViewModel = favoritesViewModel,
+                    favoritesViewModel = favoritesViewModel,
+                    cartViewModel = CartViewModel()
                 )
             }
         }
